@@ -1,15 +1,15 @@
 from fastapi import FastAPI, HTTPException, status
-from app.models.email_model import EmailRequest
-from app.models.push_model import PushRequest
-from app.models.sms_model import SmsRequest
-from app.models.subscribe_user_model import SubscribeUserRequest
+from app.schemas.email_model import EmailRequest
+from app.schemas.push_model import PushRequest
+from app.schemas.sms_model import SmsRequest
+from app.schemas.subscribe_user_model import SubscribeUserRequest
 from app.services.push_service import send_push
 from app.services.sms_service import send_sms
 from app.services.email_service import send_email
 from app.services.subscribe_user import subscribe_user_sms_email
 import httpx
 
-app = FastAPI(title="API de Notificacao - OneSignal")
+app = FastAPI(title="API de Notificação")
 
 @app.post("/notifications/subscribe-user")
 async def subscribe_user_endpoint(body: SubscribeUserRequest):
@@ -78,21 +78,29 @@ async def send_push_endpoint(body: PushRequest):
     status_code=status.HTTP_202_ACCEPTED
 )
 async def send_email_endpoint(body: EmailRequest):
+
+    if not body.external_id or len(body.external_id) == 0:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="external_id é obrigatório para envio de email via OneSignal"
+        )
+
     try:
         return await send_email(
-            subject=body.title,
+            subject=body.subject,
             html=body.html,
-            external_ids=body.external_id
+            external_ids=body.external_id,
+            emails=body.emails
         )
 
     except httpx.HTTPStatusError as e:
         raise HTTPException(
             status_code=status.HTTP_502_BAD_GATEWAY,
-            detail=str(e)
+            detail=e.response.text
         )
 
-    except Exception:
+    except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Erro interno ao processar notificação"
+            detail=str(e)
         )
