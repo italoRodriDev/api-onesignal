@@ -1,3 +1,5 @@
+# By Italo Rodri. Dev.
+
 # Preparar pacotes e scripts
 >>> python -m venv fastapienv
 
@@ -9,7 +11,6 @@
 
 # Instalr uvicorn
 >>> pip install "uvicorn[s]"
-Ele é o “motor” que executa aplicações criadas com frameworks modernos como FastAPI, Starlette e Django (modo async).
 
 # Listar pacotes instalados
 >>> pip list
