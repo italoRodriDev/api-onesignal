@@ -1,12 +1,12 @@
 from fastapi import FastAPI, HTTPException, status
-from app.schemas.email_model import EmailRequest
-from app.schemas.push_model import PushRequest
-from app.schemas.sms_model import SmsRequest
-from app.schemas.subscribe_user_model import SubscribeUserRequest
+from app.schemas.email_schema import EmailRequest
+from app.schemas.push_schema import PushRequest
+from app.schemas.sms_schema import SmsRequest
+from app.schemas.subscribe_user_schema import SubscribeUserRequest
 from app.services.push_service import send_push
 from app.services.sms_service import send_sms
 from app.services.email_service import send_email
-from app.services.subscribe_user import subscribe_user_sms_email
+from app.services.subscribe_user_service import subscribe_user_sms_email
 import httpx
 
 app = FastAPI(title="API de Notificação")

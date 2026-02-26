@@ -15,11 +15,11 @@ Ele é o “motor” que executa aplicações criadas com frameworks modernos co
 >>> pip list
 
 # Rodar
->>> uvicorn books:app --reload
+>>> uvicorn main:app --reload
 
 >>> pip install "fastapi[standard]"
->>> fastapi dev books.py
->>> fastapi run books.py
+>>> fastapi dev app\main.py
+>>> fastapi run app\main.py
 
 uvicorn app.main:app --reload
 
